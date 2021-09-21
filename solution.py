@@ -16,39 +16,39 @@ def webServer(port=13331):
     #Establish the connection
     #print('Ready to serve...')
     connectionSocket, addr = serverSocket.accept() #Fill in start      #Fill in end
-
     try:
-        message = connectionSocket.recv(4096) #Fill in start    #Fill in end
-        filename = message.split()[1]
-        f = open(filename[1:])
-        outputdata = f.read() #Fill in start     #Fill in end
-        
-        #Send one HTTP header line into socket.
-        #Fill in start
-        connectionSocket.send(b'HTTP/1.1 200 OK\r\nContent-Type:text/html\r\n')
-        #Fill in end
+        try:
+            message = connectionSocket.recv(4096) #Fill in start    #Fill in end
+            filename = message.split()[1]
+            f = open(filename[1:])
+            outputdata = f.read() #Fill in start     #Fill in end
+            
+            #Send one HTTP header line into socket.
+            #Fill in start
+            connectionSocket.send(b'HTTP/1.1 200 OK\r\nContent-Type:text/html\r\n')
+            #Fill in end
 
-        #Send the content of the requested file to the client
-        for i in range(0, len(outputdata)):
-            connectionSocket.send(outputdata[i].encode())
+            #Send the content of the requested file to the client
+            for i in range(0, len(outputdata)):
+                connectionSocket.send(outputdata[i].encode())
 
-        connectionSocket.send("\r\n".encode())
-        connectionSocket.close()
-    except IOError:
-        # Send response message for file not found (404)
-        #Fill in start
-        connectionSocket.sendall(b'HTTP/1.1 200 OK\r\nContent-Type:text/html\r\nConnection:close\r\n\r\n<html><head>HTTP 404 File Not Found</head></html>\r\n')
-        #Fill in end
+            connectionSocket.send("\r\n".encode())
+            connectionSocket.close()
+        except IOError:
+            # Send response message for file not found (404)
+            #Fill in start
+            connectionSocket.sendall(b'HTTP/1.1 200 OK\r\nContent-Type:text/html\r\nConnection:close\r\n\r\n<html><head>HTTP 404 File Not Found</head></html>\r\n')
+            #Fill in end
 
 
-        #Close client socket
-        #Fill in start
-        connectionSocket.close()
-        serverSocket.close()
-        #Fill in end
+            #Close client socket
+            #Fill in start
+            connectionSocket.close()
+            serverSocket.close()
+            #Fill in end
 
-    except (ConnectionResetError, BrokenPipeError):
-      pass
+        except (ConnectionResetError, BrokenPipeError):
+        pass
 
   serverSocket.close()
   sys.exit()  # Terminate the program after sending the corresponding data
