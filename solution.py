@@ -1,40 +1,71 @@
- from socket import *
+from socket import *
 
-    def smtp_client(port=1025, mailserver='127.0.0.1'):
-        msg = "\r\n My message"
-        endmsg = "\r\n.\r\n"
 
-        clientSocket = socket(AF_INET, SOCK_STREAM)
+def client_server(port=1025, mailserver='127.0.0.1'):
+    msg = "\r\n My message"
+    endmsg = "\r\n.\r\n"
 
-        recv = clientSocket.recv(1024).decode()
-    
-        heloCommand = 'HELO Alice\r\n'
-        clientSocket.send(heloCommand.encode())
-        recv1 = clientSocket.recv(1024).decode()
-       
-        mailfromCommand = 'MAIL FROM:<a@a.com>\r\n'
-        clientSocket.send(mailfromCommand.encode())
-        recv1 = clientSocket.recv(1024)
-       
-        rcpttoCommand = 'RCPT TO:<a@a.com>\r\n'
-        clientSocket.send(rcpttoCommand.encode())
-        recv1 = clientSocket.recv(1024)
-       
-        dataCommand = 'DATA\r\n'
- 
-        clientSocket.send(dataCommand.encode())
-        recv1 = clientSocket.recv(1024)
+    # Choose a mail server (e.g. Google mail server) if you want to verify the script beyond GradeScope
 
-        mailMessageEnd = '\r\n.\r\n'
-        message=msg + mailMessageEnd
-        clientSocket.send(message.encode())
-        recv1 = clientSocket.recv(1024)
+    # Create socket called clientSocket and establish a TCP connection with mailserver and port
 
-        quitCommand = 'QUIT\r\n'
+    # Fill in start
+    clientSocket = socket(AF_NET, SOCK_STREAM)
+    clientSocket.connect(mailserver)
+    # Fill in end
 
-        clientSocket.send(quitCommand.encode())
-        recv1 = clientSocket.recv(1024)
-        clientSocket.close()
+    recv = clientSocket.recv(1024).decode()
+    print(recv)
+    if recv[:3] != '220':
+        print('220 reply not received from server.')
 
-    if __name__ == '__main__':
-        smtp_client(1025, '127.0.0.1')
+    # Send HELO command and print server response.
+    heloCommand = 'HELO Alice\r\n'
+    clientSocket.send(heloCommand.encode())
+    recv1 = clientSocket.recv(1024).decode()
+    print(recv1)
+    if recv1[:3] != '250':
+        print('250 reply not received from server.')
+
+    # Send MAIL FROM command and print server response.
+    # Fill in start
+    mailFrom = 'MAIL FROM: <rb4904@nyu.edu>\r\n'
+    clientSocket.send(mailFrom.encode())
+    # Fill in end
+
+    # Send RCPT TO command and print server response.
+    # Fill in start
+    rcpt = 'RCPT TO: <rb4904@nyu.edu>\r\n'
+    clientSocket.send(rcpt.encode())
+    recv3 = clientSocket.recv(1024).decode()
+    # Fill in end
+
+    # Send DATA command and print server response.
+    # Fill in start
+    data='DATA\r\n'
+    clientSocket.send(data.encode())
+    recv4 = clientSocket.recv(1024).decode()
+    # Fill in end
+
+    # Send message data.
+    # Fill in start
+    clientSocket.send(bytes((msg + endmsg).encode()))
+    recv5 = clientSocket.recv(1024).encode()
+    # Fill in end
+
+    # Message ends with a single period.
+    # Fill in start
+    # Fill in end
+
+    # Send QUIT command and get server response.
+    # Fill in start
+    quitCommand = 'QUIT\r\n'
+    recv6 = clientSocket.recv(1024).decode()
+    clientSocket.send(quitCommand.encode())
+    recv5 = clientSocket.recv(1024).decode()
+    clientSocket.close()
+    # Fill in end
+
+
+if __name__ == '__main__':
+    client_server(1025, '127.0.0.1')
