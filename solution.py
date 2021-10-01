@@ -1,7 +1,7 @@
 from socket import *
 
 
-def webserver(port=1025, mailserver='127.0.0.1'):
+def web_server(port=1025, mailserver='127.0.0.1'):
     msg = "\r\n My message"
     endmsg = "\r\n.\r\n"
 
@@ -68,4 +68,4 @@ def webserver(port=1025, mailserver='127.0.0.1'):
 
 
 if __name__ == '__main__':
-    webserver(1025, '127.0.0.1')
+    web_server(1025, '127.0.0.1')
