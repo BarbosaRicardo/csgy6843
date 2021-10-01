@@ -10,6 +10,8 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     # Create socket called clientSocket and establish a TCP connection with mailserver and port
 
     # Fill in start
+    clientSocket = socket(AF_NET, SOCK_STREAM)
+    clientSocket.connect(mailserver)
     # Fill in end
 
     recv = clientSocket.recv(1024).decode()
@@ -27,18 +29,28 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
     # Send MAIL FROM command and print server response.
     # Fill in start
+    mailFrom = 'MAIL FROM: <rb4904@nyu.edu>\r\n'
+    clientSocket.send(mailFrom.encode())
     # Fill in end
 
     # Send RCPT TO command and print server response.
     # Fill in start
+    rcpt = 'RCPT TO: <rb4904@nyu.edu>\r\n'
+    clientSocket.send(rcpt.encode())
+    recv3 = clientSocket.recv(1024).decode()
     # Fill in end
 
     # Send DATA command and print server response.
     # Fill in start
+    data='DATA\r\n'
+    clientSocket.send(data.encode())
+    recv4 = clientSocket.recv(1024).decode()
     # Fill in end
 
     # Send message data.
     # Fill in start
+    clientSocket.send(bytes((msg + endmsg).encode()))
+    recv5 = clientSocket.recv(1024).encode()
     # Fill in end
 
     # Message ends with a single period.
@@ -47,6 +59,11 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
     # Send QUIT command and get server response.
     # Fill in start
+    quitCommand = 'QUIT\r\n'
+    recv6 = clientSocket.recv(1024).decode()
+    clientSocket.send(quitCommand.encode())
+    recv5 = clientSocket.recv(1024).decode()
+    clientSocket.close()
     # Fill in end
 
 
