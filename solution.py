@@ -4,8 +4,7 @@
         msg = "\r\n My message"
         endmsg = "\r\n.\r\n"
 
-        # Choose a mail server (e.g. Google mail server) if you want to verify the
-    script beyond GradeScope
+  
 
       
       
@@ -46,7 +45,7 @@
         clientSocket.send(dataCommand.encode())
         recv1 = clientSocket.recv(1024)
         #print(recv1)
-        
+
         # Fill in end
         # Send message data.
         # Fill in start
